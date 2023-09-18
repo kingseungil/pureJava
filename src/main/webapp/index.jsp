@@ -37,7 +37,7 @@
 
 <button onclick="getLocation()">위치 정보 가져오기</button>
 <button onclick="location.href='/?lat='+document.getElementById('LAT').value+'&lnt='+document.getElementById('LNT').value">
-    근처 WIPI 정보 보기
+    근처 WIFI 정보 보기
 </button>
 </body>
 </html>
