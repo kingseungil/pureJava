@@ -1,9 +1,7 @@
 package util;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SQLiteConnection {
 
@@ -31,22 +29,7 @@ public class SQLiteConnection {
         Connection connection = null;
         try {
             connection = SQLiteUtil.getConnection();
-            System.out.println("connection = " + connection);
-
-            // test table 불러오기
-            Statement statement = connection.createStatement();
-            String query = "SELECT * FROM test";
-
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                String id = resultSet.getString("id");
-                String name = resultSet.getString("name");
-                System.out.println("id = " + id);
-                System.out.println("name = " + name);
-            }
-
-
+            System.out.println("db 연결 성공");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
