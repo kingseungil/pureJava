@@ -30,12 +30,7 @@ public class WifiDao {
             preparedStatement.setDouble(8, wifiData.getPosY());
             preparedStatement.setString(9, wifiData.getSeviceNm());
 
-            int executed = preparedStatement.executeUpdate();
-            if (executed == 1) {
-                System.out.println("데이터 저장 성공");
-            } else {
-                System.out.println("데이터 저장 실패");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
