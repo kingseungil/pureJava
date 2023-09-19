@@ -1,4 +1,4 @@
-package com.example.purejava;
+package com.wifi.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,7 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import openApi.OpenAPI;
 
 @WebServlet(name = "fetchDataServlet", value = "/load-wifi")
 public class FetchDataServlet extends HttpServlet {

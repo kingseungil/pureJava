@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>전주시 WIFI</title>
 </head>
 <script>
   // 위치 정보 가져오기
@@ -23,7 +23,7 @@
   }
 </script>
 <body>
-<h1><%= "전주시 와이파이 정보 구하기" %>
+<h1 style="text-align: center; margin-top: 30px"><%= "전주시 와이파이 정보 구하기" %>
 </h1>
 <br/>
 <a href="index.jsp">홈</a> |

@@ -1,4 +1,4 @@
-package openApi;
+package com.wifi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
