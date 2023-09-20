@@ -5,11 +5,9 @@
     <title>전주시 WIFI</title>
 </head>
 <body>
-<h1 style="text-align: center; margin-top: 30px"><%= "전주시 와이파이 정보 구하기" %>
+<h1><%= "전주시 와이파이 정보 구하기" %>
 </h1>
 <br/>
 <jsp:include page="WEB-INF/view/layout/header.jsp"/>
-
-<script src="${pageContext.request.contextPath}/resources/js/location.js"></script>
 </body>
 </html>

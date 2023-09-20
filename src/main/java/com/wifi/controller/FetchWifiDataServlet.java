@@ -27,10 +27,5 @@ public class FetchWifiDataServlet extends HttpServlet {
         }
 
         request.getRequestDispatcher("/WEB-INF/view/load-wifi.jsp").forward(request, response);
-
     }
-
-    public void destroy() {
-    }
-
 }

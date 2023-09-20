@@ -1,5 +1,6 @@
 package com.wifi.controller;
 
+import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.model.WifiData;
 import com.wifi.service.WifiService;
 import java.io.IOException;
@@ -11,20 +12,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "fetchNearbyWifiServlet", value = "/nearby-wifi")
-public class FetchNearbyWifiServlet extends HttpServlet {
+@WebServlet(name = "nearbyWifiServlet", value = "/nearby-wifi")
+public class NearbyWifiServlet extends HttpServlet {
+
+    public static List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) throws SQLException {
+        WifiService wifiService = new WifiService();
+        return wifiService.getNearbyWifiSpots(positionRequestDTO);
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            WifiService wifiService = new WifiService();
+            PositionRequestDTO positionRequestDTO = new PositionRequestDTO();
             double lat = Double.parseDouble(request.getParameter("lat"));
             double lnt = Double.parseDouble(request.getParameter("lnt"));
+            positionRequestDTO.setPosX(lat);
+            positionRequestDTO.setPosY(lnt);
 
-            List<WifiData> nearbyWifiSpots = wifiService.getNearbyWifiSpots(lat, lnt);
+            List<WifiData> nearbyWifiSpots = getNearbyWifiSpots(positionRequestDTO);
             request.setAttribute("nearbyWifiSpots", nearbyWifiSpots);
-            request.getRequestDispatcher("/WEB-INF/view/nearby-wifi.jsp").forward(request, response);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
+        request.getRequestDispatcher("/WEB-INF/view/nearby-wifi.jsp").forward(request, response);
     }
 }

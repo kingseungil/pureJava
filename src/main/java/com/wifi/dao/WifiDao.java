@@ -46,11 +46,22 @@ public class WifiDao {
 
         // 데이터가 1개 이상있다면 중복
         String query =
-          "SELECT * FROM wifi WHERE posX = " + wifiData.getPosX() + " AND posY = " + wifiData.getPosY();
+          "SELECT * FROM wifi WHERE adminNm = ? AND roadAdd = ? AND detailPlace = ? AND instfacType = ? AND instplaceNm = ? AND standtData = ? AND posX = ? AND posY = ? AND seviceNm = ?";
 
         try {
             connection = SQLiteConnection.SQLiteUtil.getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, wifiData.getAdminNm());
+            ps.setString(2, wifiData.getRoadAdd());
+            ps.setString(3, wifiData.getDetailPlace());
+            ps.setString(4, wifiData.getInstfacType());
+            ps.setString(5, wifiData.getInstplaceNm());
+            ps.setString(6, wifiData.getStandtData());
+            ps.setDouble(7, wifiData.getPosX());
+            ps.setDouble(8, wifiData.getPosY());
+            ps.setString(9, wifiData.getSeviceNm());
+
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
@@ -81,7 +92,7 @@ public class WifiDao {
 
             // resultSet 없다면
             if (resultSet == null) {
-                return null;
+                return wifiDataList;
             }
 
             while (resultSet.next()) {

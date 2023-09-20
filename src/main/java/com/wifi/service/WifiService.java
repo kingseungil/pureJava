@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.wifi.dao.WifiDao;
+import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.model.WifiData;
 import com.wifi.util.CalculateDistance;
 import java.io.IOException;
@@ -79,19 +80,24 @@ public class WifiService {
     }
 
     /**
-     * 모든 데이터 가져오기
+     * 모든 데이터 가져오기 + 가져오면서 history에 저장
      */
-    public List<WifiData> getNearbyWifiSpots(double userLat, double userLnt) throws SQLException {
+    public List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) throws SQLException {
         WifiDao wifiDao = new WifiDao();
         List<WifiData> allSpots = wifiDao.getAllData();
 
         for (WifiData spot : allSpots) {
-            double distance = CalculateDistance.calculateDistance(userLat, userLnt, spot.getPosY(), spot.getPosX());
+            double distance = CalculateDistance.calculateDistance(positionRequestDTO.getPosX(),
+              positionRequestDTO.getPosY(), spot.getPosY(), spot.getPosX());
             String formattedDistance = String.format("%.4f", distance);
             spot.setDistance(Double.parseDouble(formattedDistance));
         }
 
         allSpots.sort(Comparator.comparingDouble(WifiData::getDistance));
+
+        // history에 저장
+        HistoryService historyService = new HistoryService();
+        historyService.insertHistory(positionRequestDTO);
 
         return allSpots.subList(0, Math.min(20, allSpots.size()));
     }
