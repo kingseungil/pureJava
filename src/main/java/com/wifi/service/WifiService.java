@@ -101,4 +101,25 @@ public class WifiService {
 
         return allSpots.subList(0, Math.min(20, allSpots.size()));
     }
+
+    /**
+     * 데이터 하나 가져오기
+     */
+    public WifiData getWifiDataById(int id) {
+        WifiDao wifiDao = new WifiDao();
+        WifiData existData = wifiDao.getWifiDataById(id);
+
+        // 최근에 조회한 history에서 사용자의 위도,경도 가져오기
+        HistoryService historyService = new HistoryService();
+        PositionRequestDTO latestPosition = historyService.getLatestHistory();
+
+        // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산
+        double distance = CalculateDistance.calculateDistance(latestPosition.getPosX(),
+          latestPosition.getPosY(), existData.getPosY(), existData.getPosX());
+
+        String formattedDistance = String.format("%.4f", distance);
+        existData.setDistance(Double.parseDouble(formattedDistance));
+
+        return existData;
+    }
 }

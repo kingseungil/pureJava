@@ -18,4 +18,8 @@ public class HistoryService {
         return historyDao.getHistory();
     }
 
+    public PositionRequestDTO getLatestHistory() {
+        HistoryDao historyDao = new HistoryDao();
+        return historyDao.getLatestHistory();
+    }
 }

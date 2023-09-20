@@ -97,6 +97,7 @@ public class WifiDao {
 
             while (resultSet.next()) {
                 WifiData wifiData = new WifiData();
+                wifiData.setId(resultSet.getInt("id"));
                 wifiData.setAdminNm(resultSet.getString("adminNm"));
                 wifiData.setRoadAdd(resultSet.getString("roadAdd"));
                 wifiData.setDetailPlace(resultSet.getString("detailPlace"));
@@ -117,5 +118,44 @@ public class WifiDao {
 
         return wifiDataList;
 
+    }
+
+
+    public WifiData getWifiDataById(int id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        WifiData wifiData = new WifiData();
+        String query = "SELECT * FROM wifi WHERE id = ?";
+
+        try {
+            connection = SQLiteConnection.SQLiteUtil.getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // resultSet 없다면
+            if (resultSet == null) {
+                return wifiData;
+            }
+
+            while (resultSet.next()) {
+                wifiData.setId(resultSet.getInt("id"));
+                wifiData.setAdminNm(resultSet.getString("adminNm"));
+                wifiData.setRoadAdd(resultSet.getString("roadAdd"));
+                wifiData.setDetailPlace(resultSet.getString("detailPlace"));
+                wifiData.setInstfacType(resultSet.getString("instfacType"));
+                wifiData.setInstplaceNm(resultSet.getString("instplaceNm"));
+                wifiData.setStandtData(resultSet.getString("standtData"));
+                wifiData.setPosX(resultSet.getDouble("posX"));
+                wifiData.setPosY(resultSet.getDouble("posY"));
+                wifiData.setSeviceNm(resultSet.getString("seviceNm"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            SQLiteConnection.SQLiteUtil.close(connection);
+        }
+
+        return wifiData;
     }
 }

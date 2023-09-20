@@ -55,7 +55,7 @@ public class HistoryDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         List<HistoryResponseDTO> historyList = new ArrayList<>();
-        String query = "SELECT * FROM history";
+        String query = "SELECT * FROM history order by id desc";
 
         try {
             connection = SQLiteConnection.SQLiteUtil.getConnection();
@@ -81,5 +81,33 @@ public class HistoryDao {
             SQLiteConnection.SQLiteUtil.close(connection);
         }
         return historyList;
+    }
+
+    public PositionRequestDTO getLatestHistory() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PositionRequestDTO latestHistory = new PositionRequestDTO();
+        String query = "SELECT * FROM history ORDER BY id DESC LIMIT 1";
+
+        try {
+            connection = SQLiteConnection.SQLiteUtil.getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet == null) {
+                return latestHistory;
+            }
+
+            while (resultSet.next()) {
+                latestHistory.setPosX(resultSet.getDouble("posX"));
+                latestHistory.setPosY(resultSet.getDouble("posY"));
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            SQLiteConnection.SQLiteUtil.close(connection);
+        }
+        return latestHistory;
     }
 }

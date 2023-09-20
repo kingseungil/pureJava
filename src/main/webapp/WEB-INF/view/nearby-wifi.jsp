@@ -30,12 +30,13 @@
     <tbody>
     <c:forEach items="${nearbyWifiSpots}" var="wifiSpot">
         <tr>
+            <input type="hidden" id="id" name="id" value="${wifiSpot.id}"/>
             <td>${wifiSpot.distance}</td>
             <td>${wifiSpot.adminNm}</td>
             <td>${wifiSpot.roadAdd}</td>
             <td>${wifiSpot.detailPlace}</td>
             <td>${wifiSpot.instfacType}</td>
-            <td>${wifiSpot.instplaceNm}</td>
+            <td><a href='detail?id=${wifiSpot.id}'>${wifiSpot.instplaceNm}</a></td>
             <td>${wifiSpot.standtData}</td>
             <td>${wifiSpot.posX}</td>
             <td>${wifiSpot.posY}</td>
