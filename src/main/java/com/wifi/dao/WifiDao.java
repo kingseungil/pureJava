@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WifiDao {
 
@@ -64,5 +66,45 @@ public class WifiDao {
 
         }
         return isDuplicate;
+    }
+
+    public List<WifiData> getAllData() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        List<WifiData> wifiDataList = new ArrayList<>();
+        String query = "SELECT * FROM wifi";
+
+        try {
+            connection = SQLiteConnection.SQLiteUtil.getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // resultSet 없다면
+            if (resultSet == null) {
+                return null;
+            }
+
+            while (resultSet.next()) {
+                WifiData wifiData = new WifiData();
+                wifiData.setAdminNm(resultSet.getString("adminNm"));
+                wifiData.setRoadAdd(resultSet.getString("roadAdd"));
+                wifiData.setDetailPlace(resultSet.getString("detailPlace"));
+                wifiData.setInstfacType(resultSet.getString("instfacType"));
+                wifiData.setInstplaceNm(resultSet.getString("instplaceNm"));
+                wifiData.setStandtData(resultSet.getString("standtData"));
+                wifiData.setPosX(resultSet.getDouble("posX"));
+                wifiData.setPosY(resultSet.getDouble("posY"));
+                wifiData.setSeviceNm(resultSet.getString("seviceNm"));
+
+                wifiDataList.add(wifiData);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            SQLiteConnection.SQLiteUtil.close(connection);
+        }
+
+        return wifiDataList;
+
     }
 }
