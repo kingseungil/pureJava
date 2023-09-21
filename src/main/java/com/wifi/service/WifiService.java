@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.wifi.dao.WifiDao;
 import com.wifi.dto.request.PositionRequestDTO;
+import com.wifi.dto.response.PositionResponseDTO;
 import com.wifi.model.WifiData;
 import com.wifi.util.CalculateDistance;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class WifiService {
 
         // 최근에 조회한 history에서 사용자의 위도,경도 가져오기
         HistoryService historyService = new HistoryService();
-        PositionRequestDTO latestPosition = historyService.getLatestHistory();
+        PositionResponseDTO latestPosition = historyService.getLatestHistory();
 
         // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산
         double distance = CalculateDistance.calculateDistance(latestPosition.getPosX(),

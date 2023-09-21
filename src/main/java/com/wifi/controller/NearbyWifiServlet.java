@@ -22,13 +22,13 @@ public class NearbyWifiServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            PositionRequestDTO positionRequestDTO = new PositionRequestDTO();
+            PositionRequestDTO positionResponseDTO = new PositionRequestDTO();
             double lat = Double.parseDouble(request.getParameter("lat"));
             double lnt = Double.parseDouble(request.getParameter("lnt"));
-            positionRequestDTO.setPosX(lat);
-            positionRequestDTO.setPosY(lnt);
+            positionResponseDTO.setPosX(lat);
+            positionResponseDTO.setPosY(lnt);
 
-            List<WifiData> nearbyWifiSpots = getNearbyWifiSpots(positionRequestDTO);
+            List<WifiData> nearbyWifiSpots = getNearbyWifiSpots(positionResponseDTO);
             request.setAttribute("nearbyWifiSpots", nearbyWifiSpots);
         } catch (SQLException e) {
             e.printStackTrace();
