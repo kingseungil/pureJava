@@ -4,7 +4,7 @@
 <a href="${pageContext.request.contextPath}/history">위치 히스토리 목록</a> |
 <a href="${pageContext.request.contextPath}/load-wifi">Open API 와이파이 정보 구하기</a> |
 <a href="">북마크 목록</a> |
-<a href="">북마크 그룹 관리</a>
+<a href="${pageContext.request.contextPath}/bookmark-group">북마크 그룹 관리</a>
 <br/>
 <span>LAT: <label for="LAT"></label><input type="text" id="LAT" placeholder="0.0"/></span> ,
 <span>LNT: <label for="LNT"></label><input type="text" id="LNT" placeholder="0.0"/></span>

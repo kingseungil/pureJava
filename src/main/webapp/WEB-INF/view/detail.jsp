@@ -11,7 +11,7 @@
 <select id="bookmarkGroup">
     <option value="0">북마크 그룹 이름 선택</option>
     <c:forEach items="${bookmarkGroupList}" var="bookmarkGroup">
-        <option value="${bookmarkGroup.id}">${bookmarkGroup.groupName}</option>
+        <option value="${bookmarkGroup.id}">${bookmarkGroup.name}</option>
     </c:forEach>
 </select>
 <button onclick="addBookmark()">북마크 추가</button>
