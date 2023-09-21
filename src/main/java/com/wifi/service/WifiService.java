@@ -10,17 +10,21 @@ import com.wifi.dto.response.PositionResponseDTO;
 import com.wifi.model.WifiData;
 import com.wifi.util.CalculateDistance;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WifiService {
+
+    private static final Logger logger = LoggerFactory.getLogger(WifiService.class);
 
     /**
      * 외부 API에서 데이터를 가져와서 sqlite db에 저장
@@ -29,56 +33,61 @@ public class WifiService {
      */
     public int fetchData() throws IOException, SQLException {
         OkHttpClient client = new OkHttpClient();
-        StringBuilder urlBuilder = new StringBuilder(
-          "http://openapi.jeonju.go.kr/rest/wifizone/getWifiList"); /*URL*/
-        urlBuilder.append("?").append(URLEncoder.encode("serviceKey", "UTF-8")).append("=")
-                  .append(
-                    "%2BKWJ7Ig2kpzGyjXyXNi4paYsEhrlcUaSB2gEW0slUsweLN%2FygODs7k5ZqA6NLHp3bwhAfHV7KcbZr1k9zSo6ng%3D%3D"
-                  ); /*Service Key*/
-        urlBuilder.append("&").append(URLEncoder.encode("pageNo", "UTF-8")).append("=")
-                  .append(URLEncoder.encode("1", "UTF-8")); /*시작페이지*/
-        urlBuilder.append("&").append(URLEncoder.encode("numOfRows", "UTF-8")).append("=")
-                  .append(URLEncoder.encode("1000000", "UTF-8")); /*페이지크기*/
 
-        Request request = new Request.Builder().url(urlBuilder.toString()).build();
+        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
+          .scheme("http")
+          .host("openapi.jeonju.go.kr")
+          .addPathSegment("rest")
+          .addPathSegment("wifizone")
+          .addPathSegment("getWifiList")
+          .addQueryParameter("serviceKey",
+            "+KWJ7Ig2kpzGyjXyXNi4paYsEhrlcUaSB2gEW0slUsweLN/ygODs7k5ZqA6NLHp3bwhAfHV7KcbZr1k9zSo6ng==") // 서비스키
+          .addQueryParameter("pageNo", "1") // 시작페이지
+          .addQueryParameter("numOfRows", "1000000"); // 페이지크기
+
+        Request request = new Request.Builder().url(urlBuilder.build()).build();
         List<WifiData> wifiDataList = new ArrayList<>();
-        try {
-            Response response = client.newCall(request).execute();
+
+        try (Response response = client.newCall(request).execute()) {
 
             if (response.isSuccessful()) {
+
                 ResponseBody body = response.body();
+
                 if (body != null) {
                     String xmlData = body.string();
-                    // xml을 json으로 변환
+
+                    // XML to JSON
                     ObjectMapper objectMapper = new XmlMapper();
                     JsonNode jsonNode = objectMapper.readTree(xmlData);
 
-                    // json에서 원하는 데이터 추출
+                    // JSON to POJO
                     JsonNode dataList = jsonNode.get("body").get("data").get("list");
-                    wifiDataList = new ArrayList<>();
                     for (JsonNode item : dataList) {
                         WifiData wifiData = objectMapper.treeToValue(item, WifiData.class);
                         wifiDataList.add(wifiData);
                     }
-
                     WifiDao wifiDao = new WifiDao();
-                    // sqlite db에 저장
+
                     for (WifiData wifiData : wifiDataList) {
-                        if (wifiDao.isDuplicate(wifiData)) {
+                        if (!wifiDao.isDuplicate(wifiData)) {
+                            wifiDao.insertWifiData(wifiData);
+                        } else {
                             break;
                         }
-                        wifiDao.insertWifiData(wifiData);
                     }
                 }
             } else {
-                System.out.println("Error: " + response);
+                logger.error(String.format("Error: %s", response));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (IOException | SQLException e) {
+            logger.error("Failed to fetch data ", e);
         }
 
         return wifiDataList.size();
     }
+
 
     /**
      * 모든 데이터 가져오기 + 가져오면서 history에 저장

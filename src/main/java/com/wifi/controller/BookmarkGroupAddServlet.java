@@ -8,9 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "BookmarkGroupAddServlet", value = "/bookmark-group-add")
 public class BookmarkGroupAddServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookmarkGroupAddServlet.class);
 
     public static void addBookmarkGroup(String name, int rank) throws SQLException {
         BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
@@ -26,11 +30,17 @@ public class BookmarkGroupAddServlet extends HttpServlet {
         String name = request.getParameter("name");
         String rank = request.getParameter("rank");
 
+        if (name == null || name.isEmpty() || rank == null || !rank.matches("\\d+")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         try {
             addBookmarkGroup(name, Integer.parseInt(rank));
+            response.sendRedirect("/bookmark-group");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to add bookmark group", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        response.sendRedirect("/bookmark-group");
     }
 }

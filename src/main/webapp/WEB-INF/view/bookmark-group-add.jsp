@@ -10,11 +10,11 @@
     <table>
         <tr>
             <td>그룹명</td>
-            <td><input type="text" name="name"/></td>
+            <td><input type="text" name="name" required/></td>
         </tr>
         <tr>
             <td>순서</td>
-            <td><input type="text" name="rank"/></td>
+            <td><input type="text" name="rank" pattern="\d+" title="숫자만 입력해주세요" required/></td>
         </tr>
         <tr>
             <td><input type="submit" value="추가"/></td>

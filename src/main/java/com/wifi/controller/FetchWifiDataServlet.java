@@ -8,9 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "fetchWifiDataServlet", value = "/load-wifi")
 public class FetchWifiDataServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(FetchWifiDataServlet.class);
 
     public static int fetchData() throws IOException, SQLException {
         WifiService wifiService = new WifiService();
@@ -22,7 +26,7 @@ public class FetchWifiDataServlet extends HttpServlet {
             int dataCount = fetchData();
             request.setAttribute("message", dataCount + "개의 WIFI 정보를 정상적으로 저장하였습니다.");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to fetch wifi data", e);
             request.setAttribute("message", "데이터 가져오기 실패");
         }
 

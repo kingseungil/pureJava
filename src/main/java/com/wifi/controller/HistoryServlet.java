@@ -10,9 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "historyServlet", value = "/history")
 public class HistoryServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(HistoryServlet.class);
+
 
     public static List<HistoryResponseDTO> getHistory() throws SQLException {
         HistoryService historyService = new HistoryService();
@@ -24,7 +29,8 @@ public class HistoryServlet extends HttpServlet {
             List<HistoryResponseDTO> historyList = getHistory();
             request.setAttribute("historyList", historyList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to get history list", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         request.getRequestDispatcher("/WEB-INF/view/history.jsp").forward(request, response);

@@ -11,9 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "nearbyWifiServlet", value = "/nearby-wifi")
 public class NearbyWifiServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(NearbyWifiServlet.class);
 
     public static List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) throws SQLException {
         WifiService wifiService = new WifiService();
@@ -31,7 +35,8 @@ public class NearbyWifiServlet extends HttpServlet {
             List<WifiData> nearbyWifiSpots = getNearbyWifiSpots(positionResponseDTO);
             request.setAttribute("nearbyWifiSpots", nearbyWifiSpots);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to get nearby wifi spots", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         request.getRequestDispatcher("/WEB-INF/view/nearby-wifi.jsp").forward(request, response);
