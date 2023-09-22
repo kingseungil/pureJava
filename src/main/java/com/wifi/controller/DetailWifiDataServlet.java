@@ -17,27 +17,21 @@ import org.slf4j.LoggerFactory;
 public class DetailWifiDataServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DetailWifiDataServlet.class);
+    private static final WifiService wifiService = new WifiService();
+    private static final BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
 
     public static WifiData getDetailWifiData(int id) {
-        WifiService wifiService = new WifiService();
         return wifiService.getWifiDataById(id);
     }
 
     public static List<BookmarkGroup> getBookmarkGroupList() {
-        BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
         return bookmarkGroupDao.getBookmarkGroupList();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idStr = request.getParameter("id");
-
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
         try {
-            int id = Integer.parseInt(idStr);
+            int id = validateAndGetId(request, response);
             WifiData wifiData = getDetailWifiData(id);
             request.setAttribute("wifiData", wifiData);
 
@@ -51,5 +45,13 @@ public class DetailWifiDataServlet extends HttpServlet {
         }
     }
 
+    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String idStr = request.getParameter("id");
+        if (idStr == null || !idStr.matches("\\d+")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return -1;
+        }
+        return Integer.parseInt(idStr);
+    }
 
 }

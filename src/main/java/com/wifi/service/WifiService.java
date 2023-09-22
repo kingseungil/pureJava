@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 public class WifiService {
 
     private static final Logger logger = LoggerFactory.getLogger(WifiService.class);
+    private final WifiDao wifiDao = new WifiDao();
+    private final HistoryService historyService = new HistoryService();
 
     /**
      * 외부 API에서 데이터를 가져와서 sqlite db에 저장
@@ -67,7 +69,6 @@ public class WifiService {
                         WifiData wifiData = objectMapper.treeToValue(item, WifiData.class);
                         wifiDataList.add(wifiData);
                     }
-                    WifiDao wifiDao = new WifiDao();
 
                     for (WifiData wifiData : wifiDataList) {
                         if (!wifiDao.isDuplicate(wifiData)) {
@@ -93,7 +94,6 @@ public class WifiService {
      * 모든 데이터 가져오기 + 가져오면서 history에 저장
      */
     public List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) {
-        WifiDao wifiDao = new WifiDao();
         List<WifiData> allSpots = wifiDao.getAllData();
 
         for (WifiData spot : allSpots) {
@@ -106,7 +106,6 @@ public class WifiService {
         allSpots.sort(Comparator.comparingDouble(WifiData::getDistance));
 
         // history에 저장
-        HistoryService historyService = new HistoryService();
         historyService.insertHistory(positionRequestDTO);
 
         return allSpots.subList(0, Math.min(20, allSpots.size()));
@@ -116,11 +115,9 @@ public class WifiService {
      * 데이터 하나 가져오기
      */
     public WifiData getWifiDataById(int id) {
-        WifiDao wifiDao = new WifiDao();
         WifiData existData = wifiDao.getWifiDataById(id);
 
         // 최근에 조회한 history에서 사용자의 위도,경도 가져오기
-        HistoryService historyService = new HistoryService();
         PositionResponseDTO latestPosition = historyService.getLatestHistory();
 
         // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산

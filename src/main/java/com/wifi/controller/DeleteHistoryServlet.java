@@ -14,21 +14,15 @@ import org.slf4j.LoggerFactory;
 public class DeleteHistoryServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteHistoryServlet.class);
+    private static final HistoryDao historyDao = new HistoryDao();
 
     public static void deleteHistory(int id) {
-        HistoryDao historyDao = new HistoryDao();
         historyDao.deleteHistory(id);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
         try {
-            int id = Integer.parseInt(idStr);
+            int id = validateAndGetId(request, response);
             deleteHistory(id);
             response.sendRedirect("/history");
         } catch (Exception e) {
@@ -37,4 +31,12 @@ public class DeleteHistoryServlet extends HttpServlet {
         }
     }
 
+    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String idStr = request.getParameter("id");
+        if (idStr == null || !idStr.matches("\\d+")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return -1;
+        }
+        return Integer.parseInt(idStr);
+    }
 }

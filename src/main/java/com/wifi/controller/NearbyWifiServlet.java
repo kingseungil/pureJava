@@ -19,8 +19,9 @@ public class NearbyWifiServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(NearbyWifiServlet.class);
 
+    private static final WifiService wifiService = new WifiService();
+
     public static List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) throws SQLException {
-        WifiService wifiService = new WifiService();
         return wifiService.getNearbyWifiSpots(positionRequestDTO);
     }
 

@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class AddBookmarkGroupServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(AddBookmarkGroupServlet.class);
+    private static final BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
 
     public static void addBookmarkGroup(String name, int rank) throws SQLException {
-        BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
         bookmarkGroupService.addBookmarkGroup(name, rank);
     }
 

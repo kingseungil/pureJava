@@ -8,19 +8,18 @@ import java.util.List;
 
 public class HistoryService {
 
+    private final HistoryDao historyDao = new HistoryDao();
+
     public void insertHistory(PositionRequestDTO positionRequestDTO) {
-        HistoryDao historyDao = new HistoryDao();
         historyDao.insertHistory(positionRequestDTO);
     }
 
 
     public List<HistoryResponseDTO> getHistory() {
-        HistoryDao historyDao = new HistoryDao();
         return historyDao.getHistory();
     }
 
     public PositionResponseDTO getLatestHistory() {
-        HistoryDao historyDao = new HistoryDao();
         return historyDao.getLatestHistory();
     }
 }

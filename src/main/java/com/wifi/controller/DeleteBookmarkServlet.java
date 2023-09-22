@@ -15,27 +15,31 @@ import org.slf4j.LoggerFactory;
 public class DeleteBookmarkServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteBookmarkServlet.class);
+    private static BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
 
     public static void deleteBookmark(int id) throws SQLException {
-        BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
         bookmarkGroupService.deleteBookmarkGroup(id);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
         try {
-            int id = Integer.parseInt(idStr);
+            int id = validateAndGetId(request, response);
             deleteBookmark(id);
             response.sendRedirect("/bookmark-group");
         } catch (Exception e) {
             logger.error("Failed to delete bookmark", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String idStr = request.getParameter("id");
+        if (idStr == null || !idStr.matches("\\d+")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return -1;
+        }
+        return Integer.parseInt(idStr);
     }
 
 }

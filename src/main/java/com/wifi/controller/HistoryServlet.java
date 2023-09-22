@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 public class HistoryServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(HistoryServlet.class);
-
+    private static final HistoryService historyService = new HistoryService();
 
     public static List<HistoryResponseDTO> getHistory() throws SQLException {
-        HistoryService historyService = new HistoryService();
         return historyService.getHistory();
     }
 

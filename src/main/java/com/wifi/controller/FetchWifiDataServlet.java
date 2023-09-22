@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class FetchWifiDataServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(FetchWifiDataServlet.class);
+    private static final WifiService wifiService = new WifiService();
 
     public static int fetchData() throws IOException, SQLException {
-        WifiService wifiService = new WifiService();
         return wifiService.fetchData();
     }
 

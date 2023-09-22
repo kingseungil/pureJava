@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 public class BookmarkGroupServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(BookmarkGroupServlet.class);
-
+    private static final BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
 
     public static List<BookmarkGroup> getBookmarkGroupList() throws SQLException {
-        BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
         return bookmarkGroupDao.getBookmarkGroupList();
     }
 
