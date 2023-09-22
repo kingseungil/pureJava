@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "BookmarkGroupAddServlet", value = "/bookmark-group-add")
-public class BookmarkGroupAddServlet extends HttpServlet {
+public class AddBookmarkGroupServlet extends HttpServlet {
 
-    private static final Logger logger = LoggerFactory.getLogger(BookmarkGroupAddServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddBookmarkGroupServlet.class);
 
     public static void addBookmarkGroup(String name, int rank) throws SQLException {
         BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
@@ -25,7 +25,7 @@ public class BookmarkGroupAddServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/bookmark-group-add.jsp").forward(request, response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String name = request.getParameter("name");
         String rank = request.getParameter("rank");

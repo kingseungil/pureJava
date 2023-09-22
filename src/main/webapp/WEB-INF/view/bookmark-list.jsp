@@ -29,6 +29,7 @@
                 <button onclick="location.href='/bookmark-delete?id=${bookmark.id}'">삭제</button>
             </td>
         </tr>
+    </c:forEach>
     </tbody>
 </table>
 </body>

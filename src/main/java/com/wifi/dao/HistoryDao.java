@@ -86,7 +86,6 @@ public class HistoryDao {
         } catch (SQLException | ClassNotFoundException e) {
             logger.error("Failed to get the latest history", e);
         }
-        logger.info(latestHistory.toString());
         return latestHistory;
     }
 }

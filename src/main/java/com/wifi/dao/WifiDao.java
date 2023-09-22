@@ -60,7 +60,7 @@ public class WifiDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     isDuplicate = true;
-                    logger.info("Duplicate WiFi data");
+                    logger.error("Duplicate WiFi data");
                 }
 
             } catch (SQLException e) {

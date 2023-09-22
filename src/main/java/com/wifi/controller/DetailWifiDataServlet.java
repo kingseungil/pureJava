@@ -6,7 +6,6 @@ import com.wifi.model.WifiData;
 import com.wifi.service.WifiService;
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +28,7 @@ public class DetailWifiDataServlet extends HttpServlet {
         return bookmarkGroupDao.getBookmarkGroupList();
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idStr = request.getParameter("id");
 
         if (idStr == null || !idStr.matches("\\d+")) {

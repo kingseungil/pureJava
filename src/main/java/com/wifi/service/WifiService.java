@@ -31,7 +31,7 @@ public class WifiService {
      *
      * @return 저장한 데이터의 개수
      */
-    public int fetchData() throws IOException, SQLException {
+    public int fetchData() {
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
@@ -92,7 +92,7 @@ public class WifiService {
     /**
      * 모든 데이터 가져오기 + 가져오면서 history에 저장
      */
-    public List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) throws SQLException {
+    public List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) {
         WifiDao wifiDao = new WifiDao();
         List<WifiData> allSpots = wifiDao.getAllData();
 

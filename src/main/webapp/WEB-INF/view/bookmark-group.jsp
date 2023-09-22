@@ -3,12 +3,18 @@
 <html>
 <head>
     <title>Bookmark group</title>
+    <script type="text/javascript">
+      function deleteBookmarkGroup(id) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          location.href = "bookmark-delete?id=" + id;
+        }
+      }
+    </script>
 </head>
 <body>
 <h1>북마크 그룹</h1>
 <jsp:include page="/WEB-INF/view/layout/header.jsp"/>
 <br/>
-<%--TODO bookmark-group-add 페이지로 이동--%>
 <button onclick="location.href='/bookmark-group-add'">북마크 그룹 이름 추가</button>
 <table>
     <thead>
@@ -30,9 +36,7 @@
             <td>${bookmarkGroup.created_date}</td>
             <td>${bookmarkGroup.updated_date}</td>
             <td>
-                    <%--TODO bookmark-group-update 페이지로 이동--%>
                 <button onclick="location.href='/bookmark-group-update?id=${bookmarkGroup.id}'">수정</button>
-                    <%--TODO 바로 삭제시키기 (history처럼)--%>
                 <button onclick="deleteBookmarkGroup(${bookmarkGroup.id})">삭제</button>
             </td>
         </tr>
