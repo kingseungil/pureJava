@@ -6,7 +6,7 @@
     <script type="text/javascript">
       function deleteBookmarkGroup(id) {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          location.href = "bookmark-delete?id=" + id;
+          location.href = "bookmark-group-delete?id=" + id;
         }
       }
     </script>

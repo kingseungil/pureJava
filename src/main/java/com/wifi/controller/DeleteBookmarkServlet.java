@@ -1,9 +1,8 @@
 package com.wifi.controller;
 
-import com.wifi.service.BookmarkGroupService;
+import com.wifi.dto.response.BookmarkResponseDTO;
+import com.wifi.service.BookmarkService;
 import java.io.IOException;
-import java.sql.SQLException;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,18 +14,25 @@ import org.slf4j.LoggerFactory;
 public class DeleteBookmarkServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteBookmarkServlet.class);
-    private static BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
+    private static final BookmarkService bookmarkService = new BookmarkService();
 
-    public static void deleteBookmark(int id) throws SQLException {
-        bookmarkGroupService.deleteBookmarkGroup(id);
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int id = validateAndGetId(request, response);
-            deleteBookmark(id);
-            response.sendRedirect("/bookmark-group");
+            BookmarkResponseDTO bookmark = bookmarkService.getBookmark(id);
+            request.setAttribute("bookmark", bookmark);
+            request.getRequestDispatcher("/WEB-INF/view/bookmark-delete.jsp").forward(request, response);
+        } catch (Exception e) {
+            logger.error("Failed to delete bookmark", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            int id = validateAndGetId(request, response);
+            bookmarkService.deleteBookmark(id);
+            response.sendRedirect("/bookmark-list");
         } catch (Exception e) {
             logger.error("Failed to delete bookmark", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -41,5 +47,4 @@ public class DeleteBookmarkServlet extends HttpServlet {
         }
         return Integer.parseInt(idStr);
     }
-
 }

@@ -28,7 +28,7 @@ public class BookmarkGroupService {
 
     public void deleteBookmarkGroup(int id) {
         int currentRank = bookmarkGroupDao.getBookmarkGroupById(id).getRank();
-        bookmarkGroupDao.deleteBookmark(id);
+        bookmarkGroupDao.deleteBookmarkGroup(id);
 
         List<BookmarkGroup> bookmarkGroupListAfterDelete = bookmarkGroupDao.getBookmarkGroupList();
         updateRankAfterDelete(currentRank, bookmarkGroupListAfterDelete);

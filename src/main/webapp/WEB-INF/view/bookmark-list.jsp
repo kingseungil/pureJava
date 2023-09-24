@@ -13,7 +13,7 @@
     <tr>
         <th>ID</th>
         <th>북마크 이름</th>
-        <th>와이파이 명</th>
+        <th>도로명 주소</th>
         <th>등록일자</th>
         <th>비고</th>
     </tr>
@@ -22,9 +22,9 @@
     <c:forEach items="${bookmarkList}" var="bookmark">
         <tr>
             <td>${bookmark.id}</td>
-            <td>${bookmark.name}</td>
-            <td>${bookmark.wifiName}</td>
-            <td>${bookmark.createdDate}</td>
+            <td>${bookmark.group_name}</td>
+            <td>${bookmark.roadAdd}</td>
+            <td>${bookmark.date}</td>
             <td>
                 <button onclick="location.href='/bookmark-delete?id=${bookmark.id}'">삭제</button>
             </td>

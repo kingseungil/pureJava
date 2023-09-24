@@ -30,7 +30,7 @@ public class BookmarkGroupDao {
         DaoUtil.executeUpdate(query, bookmarkGroup.getRank(), bookmarkGroup.getId());
     }
 
-    public void deleteBookmark(int id) {
+    public void deleteBookmarkGroup(int id) {
         String query = "DELETE FROM bookmark_group WHERE id = ?";
         DaoUtil.executeUpdate(query, id);
     }

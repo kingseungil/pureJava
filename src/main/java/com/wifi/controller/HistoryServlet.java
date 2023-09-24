@@ -1,6 +1,6 @@
 package com.wifi.controller;
 
-import com.wifi.dto.response.HistoryResponseDTO;
+import com.wifi.model.History;
 import com.wifi.service.HistoryService;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,19 +19,19 @@ public class HistoryServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(HistoryServlet.class);
     private static final HistoryService historyService = new HistoryService();
 
-    public static List<HistoryResponseDTO> getHistory() throws SQLException {
+    public static List<History> getHistory() throws SQLException {
         return historyService.getHistory();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<HistoryResponseDTO> historyList = getHistory();
+            List<History> historyList = getHistory();
             request.setAttribute("historyList", historyList);
+            request.getRequestDispatcher("/WEB-INF/view/history.jsp").forward(request, response);
         } catch (SQLException e) {
             logger.error("Failed to get history list", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        request.getRequestDispatcher("/WEB-INF/view/history.jsp").forward(request, response);
     }
 }

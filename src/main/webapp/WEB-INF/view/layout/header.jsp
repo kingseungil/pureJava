@@ -4,7 +4,7 @@
 <a href="<c:url value="/"/>">홈</a> |
 <a href="<c:url value="/history"/>">위치 히스토리 목록</a> |
 <a href="<c:url value="/load-wifi"/>">Open API 와이파이 정보 구하기</a> |
-<a href="">북마크 목록</a> |
+<a href="<c:url value="/bookmark-list"/>">북마크 목록</a> |
 <a href="<c:url value="/bookmark-group"/>">북마크 그룹 관리</a>
 <br/>
 <span>LAT: <label for="LAT"></label><input type="text" id="LAT" placeholder="0.0"/></span> ,

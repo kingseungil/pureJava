@@ -2,8 +2,8 @@ package com.wifi.service;
 
 import com.wifi.dao.HistoryDao;
 import com.wifi.dto.request.PositionRequestDTO;
-import com.wifi.dto.response.HistoryResponseDTO;
 import com.wifi.dto.response.PositionResponseDTO;
+import com.wifi.model.History;
 import java.util.List;
 
 public class HistoryService {
@@ -15,7 +15,7 @@ public class HistoryService {
     }
 
 
-    public List<HistoryResponseDTO> getHistory() {
+    public List<History> getHistory() {
         return historyDao.getHistory();
     }
 

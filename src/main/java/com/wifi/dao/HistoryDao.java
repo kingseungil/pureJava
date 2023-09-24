@@ -1,8 +1,8 @@
 package com.wifi.dao;
 
 import com.wifi.dto.request.PositionRequestDTO;
-import com.wifi.dto.response.HistoryResponseDTO;
 import com.wifi.dto.response.PositionResponseDTO;
+import com.wifi.model.History;
 import com.wifi.util.DaoUtil;
 import java.util.List;
 
@@ -19,15 +19,15 @@ public class HistoryDao {
         DaoUtil.executeUpdate(query, id);
     }
 
-    public List<HistoryResponseDTO> getHistory() {
+    public List<History> getHistory() {
         String query = "SELECT * FROM history order by id desc";
         return DaoUtil.executeQuery(query, rs -> {
-            HistoryResponseDTO historyResponseDTO = new HistoryResponseDTO();
-            historyResponseDTO.setId(rs.getInt("id"));
-            historyResponseDTO.setPosX(rs.getDouble("posX"));
-            historyResponseDTO.setPosY(rs.getDouble("posY"));
-            historyResponseDTO.setDate(rs.getString("date"));
-            return historyResponseDTO;
+            History history = new History();
+            history.setId(rs.getInt("id"));
+            history.setPosX(rs.getDouble("posX"));
+            history.setPosY(rs.getDouble("posY"));
+            history.setDate(rs.getString("date"));
+            return history;
         });
     }
 
