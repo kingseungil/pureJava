@@ -1,16 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Bookmark group</title>
-    <script type="text/javascript">
-      function deleteBookmarkGroup(id) {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          location.href = "bookmark-group-delete?id=" + id;
-        }
-      }
-    </script>
 </head>
+<script type="text/javascript">
+  function deleteBookmarkGroup(id) {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      location.href = "bookmark-group-delete?id=" + id;
+    }
+  }
+</script>
 <body>
 <h1>북마크 그룹</h1>
 <jsp:include page="/WEB-INF/view/layout/header.jsp"/>

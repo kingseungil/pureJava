@@ -16,7 +16,7 @@ public class BookmarkGroupService {
         List<BookmarkGroup> bookmarkGroupList = bookmarkGroupDao.getBookmarkGroupList();
         rank = adjustRank(rank, bookmarkGroupList);
 
-        // 순서를 위한 rank 값이 중복되는 경우
+        // rank 값이 중복되는 경우
         updateRankForDuplicate(rank, bookmarkGroupList);
 
         try {

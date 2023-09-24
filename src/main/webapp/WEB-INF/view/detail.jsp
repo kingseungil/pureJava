@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -10,15 +10,16 @@
 <br/>
 <form action="<c:url value='/bookmark-add'/>" method="post">
     <input type="hidden" name="wifiDataId" value="${wifiData.id}">
-    <select name="groupId">
-        <option value="">북마크 그룹 이름 선택</option>
-        <c:forEach items="${bookmarkGroupList}" var="bookmarkGroup">
-            <option value="${bookmarkGroup.id}">${bookmarkGroup.name}</option>
-        </c:forEach>
-    </select>
+    <label>
+        <select name="groupId">
+            <option value="">북마크 그룹 이름 선택</option>
+            <c:forEach items="${bookmarkGroupList}" var="bookmarkGroup">
+                <option value="${bookmarkGroup.id}">${bookmarkGroup.name}</option>
+            </c:forEach>
+        </select>
+    </label>
     <button type='submit'>북마크 추가</button>
 </form>
-<button onclick="addBookmark()">북마크 추가</button>
 <table>
     <tr>
         <th>거리</th>

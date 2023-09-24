@@ -1,16 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>검색 히스토리</title>
-    <script type="text/javascript">
-      function deleteHistory(id) {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          location.href = "history-delete?id=" + id;
-        }
-      }
-    </script>
 </head>
+<script type="text/javascript">
+  function deleteHistory(id) {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      location.href = "history-delete?id=" + id;
+    }
+  }
+</script>
 <body>
 <h1>위치 히스토리 목록</h1>
 <br/>
