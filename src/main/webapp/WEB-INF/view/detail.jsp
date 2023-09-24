@@ -8,12 +8,16 @@
 <h1>상세페이지</h1>
 <jsp:include page="/WEB-INF/view/layout/header.jsp"/>
 <br/>
-<select id="bookmarkGroup">
-    <option value="0">북마크 그룹 이름 선택</option>
-    <c:forEach items="${bookmarkGroupList}" var="bookmarkGroup">
-        <option value="${bookmarkGroup.id}">${bookmarkGroup.name}</option>
-    </c:forEach>
-</select>
+<form action="<c:url value='/bookmark-add'/>" method="post">
+    <input type="hidden" name="wifiDataId" value="${wifiData.id}">
+    <select name="groupId">
+        <option value="">북마크 그룹 이름 선택</option>
+        <c:forEach items="${bookmarkGroupList}" var="bookmarkGroup">
+            <option value="${bookmarkGroup.id}">${bookmarkGroup.name}</option>
+        </c:forEach>
+    </select>
+    <button type='submit'>북마크 추가</button>
+</form>
 <button onclick="addBookmark()">북마크 추가</button>
 <table>
     <tr>

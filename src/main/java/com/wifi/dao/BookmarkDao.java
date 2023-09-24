@@ -38,4 +38,9 @@ public class BookmarkDao {
         String query = "DELETE FROM bookmark WHERE id = ?";
         DaoUtil.executeUpdate(query, id);
     }
+
+    public void addBookmark(int groupId, String roadAdd) {
+        String query = "INSERT INTO bookmark (bookmark_group_id, roadAdd, date) VALUES (?, ?, datetime('now','localtime'))";
+        DaoUtil.executeUpdate(query, groupId, roadAdd);
+    }
 }
