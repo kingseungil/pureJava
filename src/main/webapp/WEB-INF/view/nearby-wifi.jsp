@@ -52,8 +52,8 @@
             <td>${wifiSpot.cnstcYear}</td>
             <td>${wifiSpot.inoutDoor}</td>
             <td>${wifiSpot.remars3}</td>
-            <td>${wifiSpot.lnt}</td>
             <td>${wifiSpot.lat}</td>
+            <td>${wifiSpot.lnt}</td>
             <td>${wifiSpot.workDttm}</td>
         </tr>
     </c:forEach>
