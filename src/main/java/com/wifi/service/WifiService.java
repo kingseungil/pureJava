@@ -11,7 +11,6 @@ import com.wifi.model.WifiData;
 import com.wifi.util.CalculateDistance;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import okhttp3.HttpUrl;
@@ -35,58 +34,68 @@ public class WifiService {
      */
     public int fetchData() {
         OkHttpClient client = new OkHttpClient();
+        ObjectMapper objectMapper = new XmlMapper();
 
-        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
-          .scheme("http")
-          .host("openapi.jeonju.go.kr")
-          .addPathSegment("rest")
-          .addPathSegment("wifizone")
-          .addPathSegment("getWifiList")
-          .addQueryParameter("serviceKey",
-            "+KWJ7Ig2kpzGyjXyXNi4paYsEhrlcUaSB2gEW0slUsweLN/ygODs7k5ZqA6NLHp3bwhAfHV7KcbZr1k9zSo6ng==") // 서비스키
-          .addQueryParameter("pageNo", "1") // 시작페이지
-          .addQueryParameter("numOfRows", "1000000"); // 페이지크기
+        int totalCount = 0; // 총 저장된 데이터 수
+        int pageNo = 1; // 현재 페이지 번호
+        int pageSize = 1000; // 한 페이지당 아이템 수
 
-        Request request = new Request.Builder().url(urlBuilder.build()).build();
-        List<WifiData> wifiDataList = new ArrayList<>();
+        while (true) {
+            int startIndex = (pageNo - 1) * pageSize + 1;
+            int endIndex = pageNo * pageSize;
 
-        try (Response response = client.newCall(request).execute()) {
+            HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
+              .scheme("http")
+              .host("openapi.seoul.go.kr")
+              .port(8088)
+              .addPathSegment("634b517743666c793439756e58437a")
+              .addPathSegment("xml")
+              .addPathSegment("TbPublicWifiInfo")
+              .addPathSegment(String.valueOf(startIndex)) // 시작 인덱스
+              .addPathSegment(String.valueOf(endIndex)); // 종료 인덱스
 
-            if (response.isSuccessful()) {
+            Request request = new Request.Builder().url(urlBuilder.build()).build();
+
+            try (Response response = client.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) {
+                    logger.error(String.format("Error: %s", response));
+                    break;
+                }
 
                 ResponseBody body = response.body();
 
-                if (body != null) {
-                    String xmlData = body.string();
+                if (body == null) {
+                    break;
+                }
 
-                    // XML to JSON
-                    ObjectMapper objectMapper = new XmlMapper();
-                    JsonNode jsonNode = objectMapper.readTree(xmlData);
+                String xmlData = body.string();
+                // xml을 json으로 변환
+                JsonNode jsonNode = objectMapper.readTree(xmlData);
+                // json에서 데이터 리스트 가져오기
+                JsonNode dataList = jsonNode.get("row");
+                // 데이터가 없으면 종료
+                if (dataList == null || !dataList.elements().hasNext()) {
+                    break;
+                }
+                // 데이터 리스트를 순회하면서 db에 저장
+                for (JsonNode item : dataList) {
+                    WifiData wifiData = objectMapper.treeToValue(item, WifiData.class);
 
-                    // JSON to POJO
-                    JsonNode dataList = jsonNode.get("body").get("data").get("list");
-                    for (JsonNode item : dataList) {
-                        WifiData wifiData = objectMapper.treeToValue(item, WifiData.class);
-                        wifiDataList.add(wifiData);
-                    }
-
-                    for (WifiData wifiData : wifiDataList) {
-                        if (!wifiDao.isDuplicate(wifiData)) {
-                            wifiDao.insertWifiData(wifiData);
-                        } else {
-                            break;
-                        }
+                    if (!wifiDao.isDuplicate(wifiData)) {
+                        wifiDao.insertWifiData(wifiData);
+                        totalCount++;
+                    } else {
+                        return totalCount;
                     }
                 }
-            } else {
-                logger.error(String.format("Error: %s", response));
+            } catch (IOException | SQLException e) {
+                logger.error("Failed to fetch data ", e);
+                return totalCount;
             }
-
-        } catch (IOException | SQLException e) {
-            logger.error("Failed to fetch data ", e);
+            pageNo++;
         }
-
-        return wifiDataList.size();
+        return totalCount;
     }
 
 
@@ -98,7 +107,7 @@ public class WifiService {
 
         for (WifiData spot : allSpots) {
             double distance = CalculateDistance.calculateDistance(positionRequestDTO.getPosX(),
-              positionRequestDTO.getPosY(), spot.getPosY(), spot.getPosX());
+              positionRequestDTO.getPosY(), spot.getLnt(), spot.getLat());
             String formattedDistance = String.format("%.4f", distance);
             spot.setDistance(Double.parseDouble(formattedDistance));
         }
@@ -122,7 +131,7 @@ public class WifiService {
 
         // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산
         double distance = CalculateDistance.calculateDistance(latestPosition.getPosX(),
-          latestPosition.getPosY(), existData.getPosY(), existData.getPosX());
+          latestPosition.getPosY(), existData.getLnt(), existData.getLat());
 
         String formattedDistance = String.format("%.4f", distance);
         existData.setDistance(Double.parseDouble(formattedDistance));

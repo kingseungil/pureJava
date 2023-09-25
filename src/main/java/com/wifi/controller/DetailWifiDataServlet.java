@@ -20,22 +20,15 @@ public class DetailWifiDataServlet extends HttpServlet {
     private static final WifiService wifiService = new WifiService();
     private static final BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
 
-    public static WifiData getDetailWifiData(int id) {
-        return wifiService.getWifiDataById(id);
-    }
-
-    public static List<BookmarkGroup> getBookmarkGroupList() {
-        return bookmarkGroupDao.getBookmarkGroupList();
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
             int id = validateAndGetId(request, response);
-            WifiData wifiData = getDetailWifiData(id);
+            WifiData wifiData = wifiService.getWifiDataById(id);
             request.setAttribute("wifiData", wifiData);
 
-            List<BookmarkGroup> bookmarkGroupList = getBookmarkGroupList();
+            List<BookmarkGroup> bookmarkGroupList = bookmarkGroupDao.getBookmarkGroupList();
             request.setAttribute("bookmarkGroupList", bookmarkGroupList);
 
             request.getRequestDispatcher("/WEB-INF/view/detail.jsp").forward(request, response);

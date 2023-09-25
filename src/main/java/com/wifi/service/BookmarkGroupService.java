@@ -51,7 +51,7 @@ public class BookmarkGroupService {
 
 
     private int adjustRank(int rank, List<BookmarkGroup> bookmarkGroupList) {
-        int maxRank = bookmarkGroupList.stream().mapToInt(BookmarkGroup::getRank).max().orElse(0);
+        int maxRank = bookmarkGroupList.stream().mapToInt(BookmarkGroup::getRank).max().orElse(1);
         return Math.min(rank, maxRank);
     }
 

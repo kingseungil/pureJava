@@ -13,22 +13,22 @@ public class WifiDao {
 
     public void insertWifiData(WifiData wifiData) throws SQLException {
         String query =
-          "INSERT INTO wifi ( adminNm, roadAdd, detailPlace, instfacType, instplaceNm, standtData, posX, posY, seviceNm) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        DaoUtil.executeUpdate(query, wifiData.getAdminNm(), wifiData.getRoadAdd(), wifiData.getDetailPlace(),
-          wifiData.getInstfacType(), wifiData.getInstplaceNm(), wifiData.getStandtData(), wifiData.getPosX(),
-          wifiData.getPosY(), wifiData.getSeviceNm());
+          "INSERT INTO wifi (mgrNo, wrdofc, mainNm, roadAdd, roadAddDetail, instlFloor, instlTy, instlMby, svcSe, cmcwr, cnstcYear, inoutDoor, remars3, lat, lnt, workDttm) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        DaoUtil.executeUpdate(query, wifiData.getMgrNo(), wifiData.getWrdofc(), wifiData.getMainNm(),
+          wifiData.getRoadAdd(), wifiData.getRoadAddDetail(), wifiData.getInstlFloor(), wifiData.getInstlTy(),
+          wifiData.getInstlMby(), wifiData.getSvcSe(), wifiData.getCmcwr(), wifiData.getCnstcYear(),
+          wifiData.getInoutDoor(), wifiData.getRemars3(), wifiData.getLat(), wifiData.getLnt(), wifiData.getWorkDttm());
     }
 
     public boolean isDuplicate(WifiData wifiData) throws SQLException {
         String query =
-          "SELECT * FROM wifi WHERE adminNm = ? AND roadAdd = ? AND detailPlace = ? AND instfacType = ? AND instplaceNm = ? AND standtData = ? AND posX = ? AND posY = ? AND seviceNm = ?";
+          "SELECT * FROM wifi WHERE mgrNo = ?";
         List<WifiData> result = DaoUtil.executeQuery(query, rs -> {
-              WifiData data = new WifiData();
-              data.setId(rs.getInt("id"));
-              return data;
-          }, wifiData.getAdminNm(), wifiData.getRoadAdd(), wifiData.getDetailPlace(), wifiData.getInstfacType(),
-          wifiData.getInstplaceNm(), wifiData.getStandtData(), wifiData.getPosX(), wifiData.getPosY(),
-          wifiData.getSeviceNm());
+            WifiData data = new WifiData();
+            data.setId(rs.getInt("id"));
+            data.setMgrNo(rs.getString("mgrNo"));
+            return data;
+        }, wifiData.getMgrNo());
 
         boolean isDuplicate = !result.isEmpty();
         if (isDuplicate) {
@@ -43,15 +43,22 @@ public class WifiDao {
         return DaoUtil.executeQuery(query, rs -> {
             WifiData wifiData = new WifiData();
             wifiData.setId(rs.getInt("id"));
-            wifiData.setAdminNm(rs.getString("adminNm"));
+            wifiData.setMgrNo(rs.getString("mgrNo"));
+            wifiData.setWrdofc(rs.getString("wrdofc"));
+            wifiData.setMainNm(rs.getString("mainNm"));
             wifiData.setRoadAdd(rs.getString("roadAdd"));
-            wifiData.setDetailPlace(rs.getString("detailPlace"));
-            wifiData.setInstfacType(rs.getString("instfacType"));
-            wifiData.setInstplaceNm(rs.getString("instplaceNm"));
-            wifiData.setStandtData(rs.getString("standtData"));
-            wifiData.setPosX(rs.getDouble("posX"));
-            wifiData.setPosY(rs.getDouble("posY"));
-            wifiData.setSeviceNm(rs.getString("seviceNm"));
+            wifiData.setRoadAddDetail(rs.getString("roadAddDetail"));
+            wifiData.setInstlFloor(rs.getString("instlFloor"));
+            wifiData.setInstlTy(rs.getString("instlTy"));
+            wifiData.setInstlMby(rs.getString("instlMby"));
+            wifiData.setSvcSe(rs.getString("svcSe"));
+            wifiData.setCmcwr(rs.getString("cmcwr"));
+            wifiData.setCnstcYear(rs.getInt("cnstcYear"));
+            wifiData.setInoutDoor(rs.getString("inoutDoor"));
+            wifiData.setRemars3(rs.getString("remars3"));
+            wifiData.setLat(rs.getDouble("lat"));
+            wifiData.setLnt(rs.getDouble("lnt"));
+            wifiData.setWorkDttm(rs.getString("workDttm"));
             return wifiData;
         });
 
@@ -63,15 +70,22 @@ public class WifiDao {
         return DaoUtil.executeQuery(query, rs -> {
             WifiData wifiData = new WifiData();
             wifiData.setId(rs.getInt("id"));
-            wifiData.setAdminNm(rs.getString("adminNm"));
+            wifiData.setMgrNo(rs.getString("mgrNo"));
+            wifiData.setWrdofc(rs.getString("wrdofc"));
+            wifiData.setMainNm(rs.getString("mainNm"));
             wifiData.setRoadAdd(rs.getString("roadAdd"));
-            wifiData.setDetailPlace(rs.getString("detailPlace"));
-            wifiData.setInstfacType(rs.getString("instfacType"));
-            wifiData.setInstplaceNm(rs.getString("instplaceNm"));
-            wifiData.setStandtData(rs.getString("standtData"));
-            wifiData.setPosX(rs.getDouble("posX"));
-            wifiData.setPosY(rs.getDouble("posY"));
-            wifiData.setSeviceNm(rs.getString("seviceNm"));
+            wifiData.setRoadAddDetail(rs.getString("roadAddDetail"));
+            wifiData.setInstlFloor(rs.getString("instlFloor"));
+            wifiData.setInstlTy(rs.getString("instlTy"));
+            wifiData.setInstlMby(rs.getString("instlMby"));
+            wifiData.setSvcSe(rs.getString("svcSe"));
+            wifiData.setCmcwr(rs.getString("cmcwr"));
+            wifiData.setCnstcYear(rs.getInt("cnstcYear"));
+            wifiData.setInoutDoor(rs.getString("inoutDoor"));
+            wifiData.setRemars3(rs.getString("remars3"));
+            wifiData.setLat(rs.getDouble("lat"));
+            wifiData.setLnt(rs.getDouble("lnt"));
+            wifiData.setWorkDttm(rs.getString("workDttm"));
             return wifiData;
         }, id).get(0);
 
