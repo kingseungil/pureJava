@@ -30,8 +30,8 @@ public class NearbyWifiServlet extends HttpServlet {
             PositionRequestDTO positionResponseDTO = new PositionRequestDTO();
             double lat = Double.parseDouble(request.getParameter("lat"));
             double lnt = Double.parseDouble(request.getParameter("lnt"));
-            positionResponseDTO.setPosX(lat);
-            positionResponseDTO.setPosY(lnt);
+            positionResponseDTO.setLat(lat);
+            positionResponseDTO.setLnt(lnt);
 
             List<WifiData> nearbyWifiSpots = getNearbyWifiSpots(positionResponseDTO);
             request.setAttribute("nearbyWifiSpots", nearbyWifiSpots);

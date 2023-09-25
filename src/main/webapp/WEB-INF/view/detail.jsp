@@ -79,11 +79,11 @@
     </tr>
     <tr>
         <th>X좌표</th>
-        <td>${wifiData.lnt}</td>
+        <td>${wifiData.lat}</td>
     </tr>
     <tr>
         <th>Y좌표</th>
-        <td>${wifiData.lat}</td>
+        <td>${wifiData.lnt}</td>
     </tr>
     <tr>
         <th>작업일자</th>

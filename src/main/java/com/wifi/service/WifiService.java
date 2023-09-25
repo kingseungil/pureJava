@@ -118,8 +118,8 @@ public class WifiService {
         List<WifiData> allSpots = wifiDao.getAllData();
 
         for (WifiData spot : allSpots) {
-            double distance = CalculateDistance.calculateDistance(positionRequestDTO.getPosX(),
-              positionRequestDTO.getPosY(), spot.getLnt(), spot.getLat());
+            double distance = CalculateDistance.calculateDistance(positionRequestDTO.getLat(),
+              positionRequestDTO.getLnt(), spot.getLat(), spot.getLnt());
             String formattedDistance = String.format("%.4f", distance);
             spot.setDistance(Double.parseDouble(formattedDistance));
         }
@@ -142,8 +142,8 @@ public class WifiService {
         PositionResponseDTO latestPosition = historyService.getLatestHistory();
 
         // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산
-        double distance = CalculateDistance.calculateDistance(latestPosition.getPosX(),
-          latestPosition.getPosY(), existData.getLnt(), existData.getLat());
+        double distance = CalculateDistance.calculateDistance(latestPosition.getLat(),
+          latestPosition.getLnt(), existData.getLat(), existData.getLnt());
 
         String formattedDistance = String.format("%.4f", distance);
         existData.setDistance(Double.parseDouble(formattedDistance));

@@ -10,8 +10,8 @@ public class HistoryDao {
 
 
     public void insertHistory(PositionRequestDTO positionRequestDTO) {
-        String query = "INSERT INTO history (posX, posY,date) VALUES ( ?, ?, datetime('now','localtime'))";
-        DaoUtil.executeUpdate(query, positionRequestDTO.getPosX(), positionRequestDTO.getPosY());
+        String query = "INSERT INTO history (lat, lnt ,date) VALUES ( ?, ?, datetime('now','localtime'))";
+        DaoUtil.executeUpdate(query, positionRequestDTO.getLat(), positionRequestDTO.getLnt());
     }
 
     public void deleteHistory(int id) {
@@ -24,8 +24,8 @@ public class HistoryDao {
         return DaoUtil.executeQuery(query, rs -> {
             History history = new History();
             history.setId(rs.getInt("id"));
-            history.setPosX(rs.getDouble("posX"));
-            history.setPosY(rs.getDouble("posY"));
+            history.setLat(rs.getDouble("lat"));
+            history.setLnt(rs.getDouble("lnt"));
             history.setDate(rs.getString("date"));
             return history;
         });
@@ -35,8 +35,8 @@ public class HistoryDao {
         String query = "SELECT * FROM history ORDER BY id DESC LIMIT 1";
         List<PositionResponseDTO> result = DaoUtil.executeQuery(query, rs -> {
             PositionResponseDTO positionResponseDTO = new PositionResponseDTO();
-            positionResponseDTO.setPosX(rs.getDouble("posX"));
-            positionResponseDTO.setPosY(rs.getDouble("posY"));
+            positionResponseDTO.setLat(rs.getDouble("lat"));
+            positionResponseDTO.setLnt(rs.getDouble("lnt"));
             return positionResponseDTO;
         });
         return result.isEmpty() ? null : result.get(0);

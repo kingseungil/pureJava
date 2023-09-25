@@ -11,7 +11,7 @@ public class CalculateDistance {
           + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
           * Math.sin(lntDistance / 2) * Math.sin(lntDistance / 2);
 
-        return R * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
 }

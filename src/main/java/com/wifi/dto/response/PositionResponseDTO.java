@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class PositionResponseDTO {
 
-    private double posX;
-    private double posY;
+    private double lat;
+    private double lnt;
 }

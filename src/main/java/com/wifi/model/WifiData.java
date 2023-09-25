@@ -38,9 +38,10 @@ public class WifiData {
     private String inoutDoor; // 실내외구분
     @JsonProperty("X_SWIFI_REMARS3")
     private String remars3; // wifi접속환경
-    @JsonProperty("LAT")
-    private double lat; // 위도
+    // 공공데이터에서 위도,경도가 반대로 표기되어 있음
     @JsonProperty("LNT")
+    private double lat; // 위도
+    @JsonProperty("LAT")
     private double lnt; // 경도
     @JsonProperty("WORK_DTTM")
     private String workDttm; // 작업일자

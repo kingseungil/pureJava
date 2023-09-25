@@ -76,8 +76,8 @@ public class WifiDao {
         wifiData.setCnstcYear(rs.getInt("cnstcYear"));
         wifiData.setInoutDoor(rs.getString("inoutDoor"));
         wifiData.setRemars3(rs.getString("remars3"));
-        wifiData.setLat(rs.getDouble("lat"));
-        wifiData.setLnt(rs.getDouble("lnt"));
+        wifiData.setLat(rs.getDouble("lnt"));
+        wifiData.setLnt(rs.getDouble("lat"));
         wifiData.setWorkDttm(rs.getString("workDttm"));
         return wifiData;
     }

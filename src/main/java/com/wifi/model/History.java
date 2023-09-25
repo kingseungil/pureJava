@@ -10,7 +10,7 @@ import lombok.ToString;
 public class History {
 
     private int id;
-    private double posX;
-    private double posY;
+    private double lat;
+    private double lnt;
     private String date;
 }
