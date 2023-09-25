@@ -10,9 +10,7 @@ public class SQLiteConnection {
 
     public static class SQLiteUtil {
 
-
-        public static Connection getConnection() throws SQLException, ClassNotFoundException {
-            Class.forName("org.sqlite.JDBC");
+        public static Connection getConnection() throws SQLException {
             return DriverManager.getConnection("jdbc:sqlite:/Users/apple/Desktop/" + DB_NAME);
         }
 

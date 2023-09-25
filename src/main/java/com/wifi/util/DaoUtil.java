@@ -24,7 +24,7 @@ public class DaoUtil {
                     results.add(handler.handle(resultSet));
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             logger.error("Failed to execute query", e);
         }
         return results;
@@ -35,10 +35,24 @@ public class DaoUtil {
           PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, params);
             preparedStatement.executeUpdate();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             logger.error("Failed to execute update", e);
         }
     }
+
+    public static void executeBatchUpdate(String query, List<Object[]> paramsList) {
+        try (Connection connection = SQLiteConnection.SQLiteUtil.getConnection();
+          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for (Object[] params : paramsList) {
+                setParameters(preparedStatement, params);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.error("Failed to execute batch update", e);
+        }
+    }
+
 
     private static void setParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
         for (int i = 0; i < params.length; i++) {

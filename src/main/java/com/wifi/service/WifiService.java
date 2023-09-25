@@ -11,6 +11,7 @@ import com.wifi.model.WifiData;
 import com.wifi.util.CalculateDistance;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import okhttp3.HttpUrl;
@@ -32,13 +33,19 @@ public class WifiService {
      *
      * @return 저장한 데이터의 개수
      */
-    public int fetchData() {
+    public int fetchData() throws SQLException {
+        // DB에 데이터가 이미 있다면 중복된 것으로 간주하고 종료
+        if (wifiDao.isDuplicate()) {
+            return 0;
+        }
+
         OkHttpClient client = new OkHttpClient();
         ObjectMapper objectMapper = new XmlMapper();
 
         int totalCount = 0; // 총 저장된 데이터 수
         int pageNo = 1; // 현재 페이지 번호
         int pageSize = 1000; // 한 페이지당 아이템 수
+        List<WifiData> wifiDataList = new ArrayList<>();
 
         while (true) {
             int startIndex = (pageNo - 1) * pageSize + 1;
@@ -81,12 +88,13 @@ public class WifiService {
                 // 데이터 리스트를 순회하면서 db에 저장
                 for (JsonNode item : dataList) {
                     WifiData wifiData = objectMapper.treeToValue(item, WifiData.class);
+                    wifiDataList.add(wifiData);
+                    totalCount++;
 
-                    if (!wifiDao.isDuplicate(wifiData)) {
-                        wifiDao.insertWifiData(wifiData);
-                        totalCount++;
-                    } else {
-                        return totalCount;
+                    // 1000개씩 끊어서 db에 저장
+                    if (wifiDataList.size() >= 1000) {
+                        wifiDao.insertWifiDataBatch(wifiDataList);
+                        wifiDataList.clear();
                     }
                 }
             } catch (IOException | SQLException e) {
@@ -94,6 +102,10 @@ public class WifiService {
                 return totalCount;
             }
             pageNo++;
+        }
+        // 남아있는 데이터 저장
+        if (!wifiDataList.isEmpty()) {
+            wifiDao.insertWifiDataBatch(wifiDataList);
         }
         return totalCount;
     }
