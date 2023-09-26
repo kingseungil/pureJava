@@ -2,7 +2,6 @@ package com.wifi.controller;
 
 import com.wifi.service.BookmarkGroupService;
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +16,6 @@ public class AddBookmarkGroupServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(AddBookmarkGroupServlet.class);
     private static final BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
 
-    public static void addBookmarkGroup(String name, int rank) throws SQLException {
-        bookmarkGroupService.addBookmarkGroup(name, rank);
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/view/bookmark-group-add.jsp").forward(request, response);
@@ -35,11 +31,11 @@ public class AddBookmarkGroupServlet extends HttpServlet {
         }
 
         try {
-            addBookmarkGroup(name, Integer.parseInt(rank));
+            bookmarkGroupService.addBookmarkGroup(name, Integer.parseInt(rank));
             response.sendRedirect("/bookmark-group");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("Failed to add bookmark group", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }
