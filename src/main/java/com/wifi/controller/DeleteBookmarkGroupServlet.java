@@ -1,6 +1,7 @@
 package com.wifi.controller;
 
 import com.wifi.service.BookmarkGroupService;
+import com.wifi.util.RequestUtil;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class DeleteBookmarkGroupServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteBookmarkGroupServlet.class);
-    private static BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
+    private static final BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
 
     public static void deleteBookmarkGroup(int id) throws SQLException {
         bookmarkGroupService.deleteBookmarkGroup(id);
@@ -24,7 +25,7 @@ public class DeleteBookmarkGroupServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             deleteBookmarkGroup(id);
             response.sendRedirect("/bookmark-group");
         } catch (Exception e) {
@@ -32,14 +33,4 @@ public class DeleteBookmarkGroupServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
-    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return -1;
-        }
-        return Integer.parseInt(idStr);
-    }
-
 }

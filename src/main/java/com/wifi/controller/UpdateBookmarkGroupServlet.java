@@ -3,6 +3,7 @@ package com.wifi.controller;
 import com.wifi.dao.BookmarkGroupDao;
 import com.wifi.model.BookmarkGroup;
 import com.wifi.service.BookmarkGroupService;
+import com.wifi.util.RequestUtil;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ public class UpdateBookmarkGroupServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             BookmarkGroup bookmarkGroup = bookmarkGroupDao.getBookmarkGroupById(id);
             request.setAttribute("bookmarkGroup", bookmarkGroup);
             request.getRequestDispatcher("/WEB-INF/view/bookmark-group-update.jsp").forward(request, response);
@@ -32,9 +33,8 @@ public class UpdateBookmarkGroupServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setCharacterEncoding("UTF-8");
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             String name = request.getParameter("name");
             int rank = Integer.parseInt(request.getParameter("rank"));
             bookmarkGroupService.updateBookmarkGroup(id, name, rank);
@@ -45,12 +45,4 @@ public class UpdateBookmarkGroupServlet extends HttpServlet {
         }
     }
 
-    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return -1;
-        }
-        return Integer.parseInt(idStr);
-    }
 }

@@ -4,6 +4,7 @@ import com.wifi.dao.BookmarkGroupDao;
 import com.wifi.model.BookmarkGroup;
 import com.wifi.model.WifiData;
 import com.wifi.service.WifiService;
+import com.wifi.util.RequestUtil;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class DetailWifiDataServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             WifiData wifiData = wifiService.getWifiDataById(id);
             request.setAttribute("wifiData", wifiData);
 
@@ -37,14 +38,4 @@ public class DetailWifiDataServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
-    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return -1;
-        }
-        return Integer.parseInt(idStr);
-    }
-
 }

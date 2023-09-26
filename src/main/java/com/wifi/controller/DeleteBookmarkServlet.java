@@ -2,6 +2,7 @@ package com.wifi.controller;
 
 import com.wifi.dto.response.BookmarkResponseDTO;
 import com.wifi.service.BookmarkService;
+import com.wifi.util.RequestUtil;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,7 @@ public class DeleteBookmarkServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             BookmarkResponseDTO bookmark = bookmarkService.getBookmark(id);
             request.setAttribute("bookmark", bookmark);
             request.getRequestDispatcher("/WEB-INF/view/bookmark-delete.jsp").forward(request, response);
@@ -30,21 +31,12 @@ public class DeleteBookmarkServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            int id = validateAndGetId(request, response);
+            int id = RequestUtil.validateId(request, response);
             bookmarkService.deleteBookmark(id);
             response.sendRedirect("/bookmark-list");
         } catch (Exception e) {
             logger.error("Failed to delete bookmark", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private int validateAndGetId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idStr = request.getParameter("id");
-        if (idStr == null || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return -1;
-        }
-        return Integer.parseInt(idStr);
     }
 }

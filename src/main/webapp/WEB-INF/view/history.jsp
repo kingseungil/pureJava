@@ -29,8 +29,8 @@
     <c:forEach items="${historyList}" var="history">
         <tr>
             <td>${history.id}</td>
-            <td>${history.posX}</td>
-            <td>${history.posY}</td>
+            <td>${history.lat}</td>
+            <td>${history.lnt}</td>
             <td>${history.date}</td>
             <td>
                 <button onclick="deleteHistory(${history.id})">삭제
