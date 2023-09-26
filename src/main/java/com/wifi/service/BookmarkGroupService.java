@@ -52,7 +52,7 @@ public class BookmarkGroupService {
 
     private int adjustRank(int rank, List<BookmarkGroup> bookmarkGroupList) {
         int maxRank = bookmarkGroupList.stream().mapToInt(BookmarkGroup::getRank).max().orElse(1);
-        return Math.min(rank, maxRank);
+        return Math.min(rank, maxRank + 1);
     }
 
     private void updateRankForDuplicate(int rank, List<BookmarkGroup> bookmarkGroupList) {
