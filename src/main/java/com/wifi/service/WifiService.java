@@ -8,7 +8,6 @@ import com.wifi.dao.WifiDao;
 import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.dto.response.PositionResponseDTO;
 import com.wifi.model.WifiData;
-import com.wifi.util.CalculateDistance;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -118,7 +117,7 @@ public class WifiService {
         List<WifiData> allSpots = wifiDao.getAllData();
 
         for (WifiData spot : allSpots) {
-            double distance = CalculateDistance.calculateDistance(positionRequestDTO.getLat(),
+            double distance = spot.calculateDistance(positionRequestDTO.getLat(),
               positionRequestDTO.getLnt(), spot.getLat(), spot.getLnt());
             String formattedDistance = String.format("%.4f", distance);
             spot.setDistance(Double.parseDouble(formattedDistance));
@@ -142,7 +141,7 @@ public class WifiService {
         PositionResponseDTO latestPosition = historyService.getLatestHistory();
 
         // 사용자의 위도,경도와 해당 데이터의 위도,경도로 거리 계산
-        double distance = CalculateDistance.calculateDistance(latestPosition.getLat(),
+        double distance = existData.calculateDistance(latestPosition.getLat(),
           latestPosition.getLnt(), existData.getLat(), existData.getLnt());
 
         String formattedDistance = String.format("%.4f", distance);
