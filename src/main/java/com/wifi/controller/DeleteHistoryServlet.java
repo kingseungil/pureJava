@@ -1,6 +1,6 @@
 package com.wifi.controller;
 
-import com.wifi.dao.HistoryDao;
+import com.wifi.repository.HistoryRepository;
 import com.wifi.util.RequestUtil;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 public class DeleteHistoryServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteHistoryServlet.class);
-    private static final HistoryDao historyDao = new HistoryDao();
+    private static final HistoryRepository HISTORY_REPOSITORY = new HistoryRepository();
 
     public static void deleteHistory(int id) {
-        historyDao.deleteHistory(id);
+        HISTORY_REPOSITORY.deleteHistory(id);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

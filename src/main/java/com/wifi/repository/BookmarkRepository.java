@@ -1,10 +1,10 @@
-package com.wifi.dao;
+package com.wifi.repository;
 
 import com.wifi.dto.response.BookmarkResponseDTO;
 import com.wifi.util.DaoUtil;
 import java.util.List;
 
-public class BookmarkDao {
+public class BookmarkRepository {
 
     public List<BookmarkResponseDTO> getBookmarkList() {
         String query = "SELECT b.id, b.bookmark_group_id, bg.name as group_name, b.roadAdd, b.date "

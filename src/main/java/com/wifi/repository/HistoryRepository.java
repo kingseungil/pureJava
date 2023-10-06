@@ -1,4 +1,4 @@
-package com.wifi.dao;
+package com.wifi.repository;
 
 import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.dto.response.PositionResponseDTO;
@@ -6,7 +6,7 @@ import com.wifi.model.History;
 import com.wifi.util.DaoUtil;
 import java.util.List;
 
-public class HistoryDao {
+public class HistoryRepository {
 
 
     public void insertHistory(PositionRequestDTO positionRequestDTO) {

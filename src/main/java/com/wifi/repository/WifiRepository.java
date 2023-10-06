@@ -1,4 +1,4 @@
-package com.wifi.dao;
+package com.wifi.repository;
 
 import com.wifi.model.WifiData;
 import com.wifi.util.DaoUtil;
@@ -9,9 +9,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WifiDao {
+public class WifiRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(WifiDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(WifiRepository.class);
 
     public void insertWifiDataBatch(List<WifiData> wifiDataList) throws SQLException {
         String query =

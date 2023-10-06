@@ -1,8 +1,8 @@
 package com.wifi.controller;
 
-import com.wifi.dao.BookmarkGroupDao;
 import com.wifi.model.BookmarkGroup;
 import com.wifi.model.WifiData;
+import com.wifi.repository.BookmarkGroupRepository;
 import com.wifi.service.WifiService;
 import com.wifi.util.RequestUtil;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class DetailWifiDataServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DetailWifiDataServlet.class);
     private static final WifiService wifiService = new WifiService();
-    private static final BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
+    private static final BookmarkGroupRepository BOOKMARK_GROUP_REPOSITORY = new BookmarkGroupRepository();
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -29,7 +29,7 @@ public class DetailWifiDataServlet extends HttpServlet {
             WifiData wifiData = wifiService.getWifiDataById(id);
             request.setAttribute("wifiData", wifiData);
 
-            List<BookmarkGroup> bookmarkGroupList = bookmarkGroupDao.getBookmarkGroupList();
+            List<BookmarkGroup> bookmarkGroupList = BOOKMARK_GROUP_REPOSITORY.getBookmarkGroupList();
             request.setAttribute("bookmarkGroupList", bookmarkGroupList);
 
             request.getRequestDispatcher("/WEB-INF/view/detail.jsp").forward(request, response);

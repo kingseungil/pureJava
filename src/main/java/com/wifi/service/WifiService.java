@@ -4,10 +4,10 @@ package com.wifi.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.wifi.dao.WifiDao;
 import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.dto.response.PositionResponseDTO;
 import com.wifi.model.WifiData;
+import com.wifi.repository.WifiRepository;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class WifiService {
 
     private static final Logger logger = LoggerFactory.getLogger(WifiService.class);
-    private final WifiDao wifiDao = new WifiDao();
+    private final WifiRepository wifiRepository = new WifiRepository();
     private final HistoryService historyService = new HistoryService();
 
     /**
@@ -34,7 +34,7 @@ public class WifiService {
      */
     public int fetchData() throws SQLException {
         // DB에 데이터가 이미 있다면 중복된 것으로 간주하고 종료
-        if (wifiDao.isDuplicate()) {
+        if (wifiRepository.isDuplicate()) {
             return 0;
         }
 
@@ -92,7 +92,7 @@ public class WifiService {
 
                     // 1000개씩 끊어서 db에 저장
                     if (wifiDataList.size() >= 1000) {
-                        wifiDao.insertWifiDataBatch(wifiDataList);
+                        wifiRepository.insertWifiDataBatch(wifiDataList);
                         wifiDataList.clear();
                     }
                 }
@@ -104,7 +104,7 @@ public class WifiService {
         }
         // 남아있는 데이터 저장
         if (!wifiDataList.isEmpty()) {
-            wifiDao.insertWifiDataBatch(wifiDataList);
+            wifiRepository.insertWifiDataBatch(wifiDataList);
         }
         return totalCount;
     }
@@ -114,7 +114,7 @@ public class WifiService {
      * 모든 데이터 가져오기 + 가져오면서 history에 저장
      */
     public List<WifiData> getNearbyWifiSpots(PositionRequestDTO positionRequestDTO) {
-        List<WifiData> allSpots = wifiDao.getAllData();
+        List<WifiData> allSpots = wifiRepository.getAllData();
 
         for (WifiData spot : allSpots) {
             double distance = spot.calculateDistance(positionRequestDTO.getLat(),
@@ -135,7 +135,7 @@ public class WifiService {
      * 데이터 하나 가져오기
      */
     public WifiData getWifiDataById(int id) {
-        WifiData existData = wifiDao.getWifiDataById(id);
+        WifiData existData = wifiRepository.getWifiDataById(id);
 
         // 최근에 조회한 history에서 사용자의 위도,경도 가져오기
         PositionResponseDTO latestPosition = historyService.getLatestHistory();

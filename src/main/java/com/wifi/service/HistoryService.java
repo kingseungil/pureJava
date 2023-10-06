@@ -1,25 +1,25 @@
 package com.wifi.service;
 
-import com.wifi.dao.HistoryDao;
 import com.wifi.dto.request.PositionRequestDTO;
 import com.wifi.dto.response.PositionResponseDTO;
 import com.wifi.model.History;
+import com.wifi.repository.HistoryRepository;
 import java.util.List;
 
 public class HistoryService {
 
-    private final HistoryDao historyDao = new HistoryDao();
+    private final HistoryRepository historyRepository = new HistoryRepository();
 
     public void insertHistory(PositionRequestDTO positionRequestDTO) {
-        historyDao.insertHistory(positionRequestDTO);
+        historyRepository.insertHistory(positionRequestDTO);
     }
 
 
     public List<History> getHistory() {
-        return historyDao.getHistory();
+        return historyRepository.getHistory();
     }
 
     public PositionResponseDTO getLatestHistory() {
-        return historyDao.getLatestHistory();
+        return historyRepository.getLatestHistory();
     }
 }

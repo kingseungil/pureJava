@@ -1,7 +1,7 @@
 package com.wifi.controller;
 
-import com.wifi.dao.BookmarkGroupDao;
 import com.wifi.model.BookmarkGroup;
+import com.wifi.repository.BookmarkGroupRepository;
 import com.wifi.service.BookmarkGroupService;
 import com.wifi.util.RequestUtil;
 import java.io.IOException;
@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
 public class UpdateBookmarkGroupServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateBookmarkGroupServlet.class);
-    private static final BookmarkGroupDao bookmarkGroupDao = new BookmarkGroupDao();
+    private static final BookmarkGroupRepository BOOKMARK_GROUP_REPOSITORY = new BookmarkGroupRepository();
     private static final BookmarkGroupService bookmarkGroupService = new BookmarkGroupService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int id = RequestUtil.validateId(request, response);
-            BookmarkGroup bookmarkGroup = bookmarkGroupDao.getBookmarkGroupById(id);
+            BookmarkGroup bookmarkGroup = BOOKMARK_GROUP_REPOSITORY.getBookmarkGroupById(id);
             request.setAttribute("bookmarkGroup", bookmarkGroup);
             request.getRequestDispatcher("/WEB-INF/view/bookmark-group-update.jsp").forward(request, response);
         } catch (Exception e) {

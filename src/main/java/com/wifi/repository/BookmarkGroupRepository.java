@@ -1,10 +1,10 @@
-package com.wifi.dao;
+package com.wifi.repository;
 
 import com.wifi.model.BookmarkGroup;
 import com.wifi.util.DaoUtil;
 import java.util.List;
 
-public class BookmarkGroupDao {
+public class BookmarkGroupRepository {
 
 
     public List<BookmarkGroup> getBookmarkGroupList() {
