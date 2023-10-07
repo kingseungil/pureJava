@@ -31,7 +31,7 @@ public class WifiData {
     @JsonProperty("X_SWIFI_SVC_SE")
     private String svcSe; // 서비스구분
     @JsonProperty("X_SWIFI_CMCWR")
-    private String cmcwr; // 망종륲
+    private String cmcwr; // 망종류
     @JsonProperty("X_SWIFI_CNSTC_YEAR")
     private int cnstcYear; // 설치년도
     @JsonProperty("X_SWIFI_INOUT_DOOR")
